@@ -91,7 +91,7 @@
 - 有关更多信息，请参考 WebDriver API 文档
 
 - 经常用到的函数：获取网页源码、获取cookie等方法总结
-  - 获取网页源代码：`driver.page_source`
+  - 获取网页源代码，使用driver的属性page_source：`driver.page_source` 返回值为字符串类型
 
     ```python
     driver = webdriver.Chrome()

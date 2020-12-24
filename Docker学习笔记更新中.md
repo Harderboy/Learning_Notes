@@ -14,9 +14,13 @@
   - --未完--
   - [官方文档](https://docs.docker.com/compose/compose-file/#links)
 
-- `links`与`depend_on`区别
+- `links`、`networks` 与`depend_on`区别
   - [docker-compose 中 links 和 depends_on 区别](http://einverne.github.io/post/2018/03/docker-compose-links-vs-depends-on-differences.html)
   - [docker-compose.yml 中 links 和 depends_on 区别](https://qastack.cn/programming/35832095/difference-between-links-and-depends-on-in-docker-compose-yml)
+  - `networks` 可以用来自定义网络，隔离不同的服务
+
+  **参考链接**  
+  [Docker Compose 网络设置](https://juejin.cn/post/6844903976534540296)
 
 - `network_mode`：设置网络模式
   - 与 `docker run`中的 `--network` 选项参数一样
@@ -64,3 +68,33 @@
   `docker volume rm $(docker volume ls -q)`
 
   - [Docker - 解决/var/lib/docker/overlay2占用很大、容器无法启动问题（清理磁盘）](https://www.hangge.com/blog/cache/detail_2555.html)
+
+- 用ssh连接docker容器
+
+  - 用新生成的镜像启动新的容器并打通22端口：`docker run -d -p 2222:22 ssh_box /usr/sbin/sshd -D`
+
+  - 然后可以使用xshell连接新生成的容器：`ssh -p 2222 root@127.0.0.1`
+
+    ```log
+    ip: 为宿主主机的ip，而不是docker容器的ip
+    端口:就是上面的2222
+    用户名： root
+    密码： 就是上面password部分设置的密码
+    在mac上可通过ssh -p 2222 root@127.0.0.1 登录新生成的容器
+    ```
+
+  - 至此ssh连接docker容器连接成功
+
+  **参考链接**  
+  [用ssh连接docker容器](https://www.cnblogs.com/jesse131/p/13543308.html)
+
+- Dockerfile ENTRYPOINT, CMD以及docker-compose.yml 中command共存如何理解？
+
+  ```text
+  CMD 和 ENTRYPOINT 没有必然联系。ENTRYPOINT 顾名思义，是入口，容器启动后该命令指定的程序会成为前台进程，它要是挂了容器就会退出了。而且该命令有 EXEC 和 SHELL 两种格式。
+  CMD 在当 ENTRYPOINT 是 EXEC 格式，那么确实可以充当 ENTRYPOINT 的参数；而 SHELL 格式下就是一条普通的命令，正常执行。并且 CMD 可以在 docker run 时动态替换。而 docker-compose 就相当于由 compose 帮你执行 docker run，它的 command 替换的是 CMD
+  ```
+
+  **参考链接**  
+  [Dockerfile ENTRYPOINT, CMD以及docker-compose.yml 中command共存如何理解？](https://segmentfault.com/q/1010000022540881/a-1020000022543898)  
+  [Dockerfile RUN、CMD、ENTRYPOINT区别](https://juejin.cn/post/6844903902807080973)

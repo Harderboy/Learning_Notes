@@ -1,9 +1,9 @@
-## Linux中有关Ctrl的快捷键
+# Linux中有关Ctrl的快捷键
 
 Ctl-A   将光标移动到命令行首  
 Ctl-B   退格键  
 **Ctl-C     终断键**  
-**Ctl-D     退出键** 
+**Ctl-D     退出键**  
 Ctl-E   将光标移动到行尾  
 Ctl-F   将光标向前移动一个字符  
 Ctl-G   响铃(老版本的Shell)  

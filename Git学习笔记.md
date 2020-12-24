@@ -6,7 +6,7 @@
 ## 建立本地分支推送到远端
 
 - 创建并切换分支：`git checkout -b local_branch`
-- 新建的本地分支push到远程服务器：`git push origin local_branch:remote_branch` 或者 `git push origin remote_branch`
+- 新建的本地分支 push（推送）到远程服务器：`git push origin local_branch:remote_branch` 或者 `git push origin remote_branch`
 - 推送时跟踪远端分支：`git push --set-upstream origin remote_branch` 或者 `git push -u origin remote_branch`
 - 本地分支和远程分支关联：`git branch --set-upstream-to origin/remote_branch`
 - 查看本地分支与远端分支的关联情况：
