@@ -1,45 +1,46 @@
-# Linux的五个查找命令：find,locate,whereis,which,type 及其区别
+# Linux的五个查找命令：find、locate、whereis、which、type 及其区别
 
 ## Linux type命令的用法
 
- 一般情况下，type命令被用于判断另外一个命令是否是内置命令，但是它实际上有更多的用法。  
+一般情况下，type命令被用于判断另外一个命令是否是内置命令，但是它实际上有更多的用法。
 
-1. 判断一个名字当前是否是alias、keyword、function、builtin、file或者什么都不是： 
+1. 判断一个名字当前是否是alias、keyword、function、builtin、file或者什么都不是：
 
     - type ls 的输出是 ls 是 `ls --color=auto' 的别名
     - type if 的输出是 if 是 shell 关键字  
     - type type 的输出是 type 是 shell 内嵌  
     - type frydsh 的输出是 bash: type: frydsh: 未找到
-          
+
 2. 判断一个名字当前是否是alias、keyword、function、builtin（内置命令）、file或者什么都不是的另一种方法（适用于脚本编程）：  
 
     - type -t ls 的输出是 alias  
     - type -t if 的输出是 keyword  
     - type -t type 的输出是 builtin  
     - type -t gedit 的输出是 file  
-    - type -t frydsh 没有输出           
-                                      
-3. 显示一个名字的所有可能： 
+    - type -t frydsh 没有输出
+
+3. 显示一个名字的所有可能：
 
     - type -a kill 的输出是 kill 是 shell 内嵌 和 kill 是 /bin/kill  
     - type -at kill 的输出是 builtin 和 file
-                       
+
 4. 查看一个命令的执行路径（如果它是外部命令的话，查看外部命令的路径）（加上-p参数后，就相当于which命令）：
 
     - type -p gedit 的输出是 /usr/bin/gedit
-    - type -p kill 没有输出（因为kill是内置命令）       
-          
+    - type -p kill 没有输出（因为kill是内置命令）
+
 5. 强制搜索外部命令的执行路径：
 
     - type -P kill 的输出是 /bin/kill  
 
-**附：**
-- type:不加任何参数时，type会显示 name是外部命令还是内置命令
-- -t :当加入 -t 时，type会将name一下面的这些字眼显示出它的意义
-- file :表示为外部命令
-- alias :表示为命令别名
-- builtin :表示为内置命令
-- -a :会有PATH变量定义的路径中，将所含有的name的命令列出来，包括alias
+**附注：**
+
+- type: 不加任何参数时，type会显示 name是外部命令还是内置命令
+- -t: 当加入 -t 时，type会将name一下面的这些字眼显示出它的意义
+- file: 表示为外部命令
+- alias: 表示为命令别名
+- builtin: 表示为内置命令
+- -a: 会有PATH变量定义的路径中，将所含有的name的命令列出来，包括alias
 
 # **总结**
 
@@ -73,7 +74,7 @@ type(选项)(参数)
 
 指令：要显示类型的指令。
 
-## 具体实例见上 
+## 具体实例见上
 
 ## 其他命令
 
