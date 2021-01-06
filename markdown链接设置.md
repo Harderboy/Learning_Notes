@@ -2,7 +2,7 @@
 
 **提升效率的几种方式总结：**
 
-- 实例1
+- 实例 1
 
   ```markdown
   示例语法：
@@ -23,7 +23,7 @@
 
   [1]:https://zhuanlan.zhihu.com/p/41246198
 
-- 实例2
+- 实例 2
   - 图片的一般格式:  
     `![图片名称](图片地址)`
   - 采用变量形式：  
@@ -39,7 +39,7 @@
 
     [2]:https://b-ssl.duitang.com/uploads/item/201704/10/20170410095843_SEvMy.thumb.700_0.jpeg
 
-- 实例3
+- 实例 3
   - 嵌套使用（图片链接网址）
 
     ```markdown
@@ -51,7 +51,35 @@
 
     [![test](https://b-ssl.duitang.com/uploads/item/201704/10/20170410095843_SEvMy.thumb.700_0.jpeg)](https://b-ssl.duitang.com/uploads/item/201704/10/20170410095843_SEvMy.thumb.700_0.jpeg)
 
-- 实例4
+- 实例 4
+  - 类似标识符的方式（给引用取个名称，一般为英文和数字），暂称为引用标识符
+
+    ```markdown
+
+    [知乎][zhihu]
+
+    <!-- 图片必须加上'!'，否则会被认为是单独的链接 -->
+    [![2]](https://www.zhihu.com/)
+
+    <!-- 这样写很简洁 -->
+    [![2]][zhihu]
+
+    <!-- 这里的'zhihu'和'2'暂且称为引用标识符（要做到见名知意），一般将其放在文章尾末 -->
+
+    [zhihu]:https://www.zhihu.com/
+    [2]:https://b-ssl.duitang.com/uploads/item/201704/10/20170410095843_SEvMy.thumb.700_0.jpeg
+
+    ```
+
+    [知乎][zhihu]
+
+    [![2]](https://www.zhihu.com/)
+
+    [![2]][zhihu]
+
+    [zhihu]:https://www.zhihu.com/
+
+- 实例5
 
   - 锚点的使用
     - 任意 1-6 个 # 标注的标题都会被添加上同名的锚点链接
