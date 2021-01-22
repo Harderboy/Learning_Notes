@@ -72,3 +72,13 @@
 7. **hostnamectl使用，改主机系统名称 `hostnamectl + set-hostname NAME`**
 
 8. docker中：运行起来的叫容器，没有运行的叫镜像
+
+9. 配置了 `host-only` 网卡的虚拟机（Linux） ping 不通主机（windows），但是主机可以 ping 通虚拟机，解决方法：关闭 windows 防火墙即可
+
+10. linux 域名解析失败
+    - 可以 ping 通 ip，不能 ping 通域名
+    - 说明是 DNS 解析 有问题！
+      - 修改 /etc/resolv.conf 文件(DNS resolver配置文件) ：
+        `nameserver 114.114.114.114`（注意先备份原有文件）
+    - 每次重启 linux，都需修改域名解析配置文件，待解决
+      - 应该是跟域名解析服务器动静态分配相关？
