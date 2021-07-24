@@ -1,6 +1,6 @@
 # 正则表达式里面比较基础的一些语法  
 
-## grep  
+## grep
 
 1. 搜寻特定字符串"the",注: n为显示行号  
 `grep -n 'the' regular_express.txt`  

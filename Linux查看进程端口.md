@@ -1,4 +1,4 @@
-# Linux 常用的命令
+# Linux 查看进程端口命令
 
 - 查看端口占用情况
   - lsof：lsof(list open files)是一个列出当前系统打开文件的工具。
