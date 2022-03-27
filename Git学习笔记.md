@@ -133,7 +133,7 @@ remove the file manually to continue.
   - git报错：`rm:cannot remove 'ThinkSAAS_2.91/':Device or resource busy`
   - 具体原因未查
   - 截图
-  ![git_branch_dir_1](./notes_imges/git_branch_dir_1.png)
-  ![git_branch_dir_2](./notes_imges/git_branch_dir_2.png)
-  ![git_branch_dir_3](./notes_imges/git_branch_dir_3.png)
+  ![git_branch_dir_1](./images/git_branch_dir_1.png)
+  ![git_branch_dir_2](./images/git_branch_dir_2.png)
+  ![git_branch_dir_3](./images/git_branch_dir_3.png)
   - 解决办法：切回`master`分支，执行命令`rm -r ThinkSAAS_2.91/` 即可解决，或者直接选中文件右键删除
