@@ -31,8 +31,8 @@
 1. 启动有4种方式：
 
     - 1）直接在 `开始` 菜单单击启动。
-    - 2）`WIN+R`打开运行对话框，输入 `bash` 启动。
-    - 3）在 PowerShell/CMD 中输入 `bash` 启动。
+    - 2）`WIN+R`打开运行对话框，输入 `bash` 启动，或者输入 `bash ~` 直接进入到linux用户目录。
+    - 3）在 PowerShell/CMD 中输入 `bash` 启动，或者输入 `bash ~` 直接进入到linux用户目录。
     - 4）使用 Windows Terminal 打开 `Ubuntu-20.04.4LTS` 的终端。
 
 2. 关闭2种方式：
