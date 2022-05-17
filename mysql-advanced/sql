@@ -1,0 +1,676 @@
+CREATE TABLE `city`  (
+  `city_id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_name` varchar(50) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  PRIMARY KEY (`city_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+
+CREATE TABLE `country`  (
+  `country_id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`country_id`) 
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+create procedure test_03()
+begin
+declare height int default 175;
+declare des varchar(50) default '';
+if height>=180 then set des="高";
+elseif height>=170 and height<180 then set des='标准';
+else set des="一般";
+end if;
+select concat("身高：",height,"类型：",des);
+end$
+
+
+-- 输入参数
+/*
+*/
+create procedure test_04(in height int)
+begin
+declare des varchar(50) default '';
+if height>=180 then set des="高";
+elseif height>=170 and height<180 then set des='标准';
+else set des="一般";
+end if;
+select concat("身高：",height,"类型：",des);
+end$
+
+-- 返回值
+create procedure test_05(in height int,out des varchar(50))
+begin
+if height>=180 then set des="高";
+elseif height>=170 and height<180 then set des='标准';
+else set des="一般";
+end if;
+end$
+
+call test_05(188,@des)$
+select @des
+
+--@des: 这种变量需要在变量名称前面加上“@”符号，叫做用户会话变量，代表整个会话过程他都是有作用的，这个类似于全局变量一样
+--@@global.sort_buffer_size：这种在变量前加上“@@”符号，叫做系统变量
+
+create procedure test_06(n int)
+begin
+declare a int default 0;
+while a<=n do
+set a=a+1;
+end while;
+select a;
+end$
+
+create procedure test_08(n int)
+begin
+declare total int default 0;
+add_num:loop
+    set total=total+n;
+    set n=n-1;
+    if n=0 then leave add_num;
+    end if;
+end loop add_num;
+select total;
+end$
+
+create table emp_logs(
+id int(11) not null auto_increment,
+opertation varchar(20) not null comment'操作类型:inset/update/delete' ,
+opertate_time datetime not null comment'操作时间' ,
+opertate_id int(11) not null comment'操作表的ID' ,
+opertate_params varchar(500) comment'操作参数' ,
+primary key(id)
+)engine=innodb default charset=utf8;
+
+
+-- 完整的sql语句 如下
+
+-- ----------------------------
+-- Table structure for city
+-- ----------------------------
+DROP TABLE IF EXISTS `city`;
+CREATE TABLE `city`  (
+  `city_id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `country_id` int(11) NOT NULL,
+  PRIMARY KEY (`city_id`) USING BTREE,
+  UNIQUE INDEX `idx_city_name`(`city_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of city
+-- ----------------------------
+INSERT INTO `city` VALUES (1, '西安市', 1);
+INSERT INTO `city` VALUES (2, 'NewYork', 2);
+INSERT INTO `city` VALUES (3, '北京', 1);
+INSERT INTO `city` VALUES (4, '上海', 1);
+
+-- ----------------------------
+-- Table structure for country
+-- ----------------------------
+DROP TABLE IF EXISTS `country`;
+CREATE TABLE `country`  (
+  `country_id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`country_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of country
+-- ----------------------------
+INSERT INTO `country` VALUES (1, 'China');
+INSERT INTO `country` VALUES (2, 'America');
+INSERT INTO `country` VALUES (3, 'Japan');
+INSERT INTO `country` VALUES (4, 'UK');
+
+-- ----------------------------
+-- Table structure for emp
+-- ----------------------------
+DROP TABLE IF EXISTS `emp`;
+CREATE TABLE `emp`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
+  `age` int(11) NULL DEFAULT NULL COMMENT '年龄',
+  `salary` int(11) NULL DEFAULT NULL COMMENT '薪水',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of emp
+-- ----------------------------
+INSERT INTO `emp` VALUES (1, '金毛狮王', 55, 3800);
+INSERT INTO `emp` VALUES (2, '白眉鹰王', 60, 4000);
+INSERT INTO `emp` VALUES (6, '光明左使', 30, 3500);
+
+
+
+-- ----------------------------
+-- Procedure structure for pro_test2
+-- 存储过程的用法
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test2`;
+delimiter $
+CREATE PROCEDURE `pro_test2`()
+begin
+  declare num int default 5;
+  select num+5;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test3
+-- 存储过程的用法
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test3`;
+delimiter $
+CREATE PROCEDURE `pro_test3`()
+begin 
+  declare num int default 0;
+  set num=num+10;
+  select num;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test4
+-- 存储过程的用法，结合into到变量中
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test4`;
+delimiter $
+CREATE PROCEDURE `pro_test4`()
+begin
+  declare num int;
+  select count(*) into num from city ;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test5
+-- if else的用法
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test5`;
+delimiter $
+CREATE PROCEDURE `pro_test5`()
+begin
+  declare height int default 175;
+  declare description varchar(50) default '';
+  if height >= 180 then
+    set description='高挑身材';
+  elseif height>=170 and height <180 then
+    set description='标准身材';
+  else
+    set description='一般身材';
+  end if;
+  select concat('身高',height,'对应的身材类型为：', description);
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test6
+-- if else的用法，结合入参
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test6`;
+delimiter $
+CREATE PROCEDURE `pro_test6`(in height int)
+begin
+  declare description varchar(50) default '';
+  if height >= 180 then
+    set description='高挑身材';
+  elseif height>=170 and height <180 then
+    set description='标准身材';
+  else
+    set description='一般身材';
+  end if;
+  select concat('身高',height,'对应的身材类型为：', description);
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test7
+-- if else的用法，结合出参
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test7`;
+delimiter $
+CREATE PROCEDURE `pro_test7`(in height int, out description varchar(50))
+begin
+  if height >= 180 then
+    set description='高挑身材';
+  elseif height>=170 and height <180 then
+    set description='标准身材';
+  else
+    set description='一般身材';
+  end if;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test8
+-- case when的用法，结合入参
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test8`;
+delimiter $
+CREATE PROCEDURE `pro_test8`(month int)
+begin
+  declare result varchar(10);
+  case 
+    when month>=1 and month <=3 then 
+      set result='第一季度';
+    when month>=4 and month <=6 then 
+      set result='第二季度';
+    when month>=7 and month <=9 then 
+      set result='第三季度';
+    when month>=10 and month <=12 then 
+      set result='第四季度';
+  end case;
+  select result;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test9 
+-- while循环，结合入参
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test9`;
+delimiter $
+CREATE PROCEDURE `pro_test9`(n int)
+begin
+  declare sum int default 0;
+  declare i int default 0;
+  while i<=n do
+    set sum = sum+i;
+    set i = i+1;
+  end while;
+  select concat('1到',n,'之和=',sum) AS content;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test10
+-- repeat循环，结合入参
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test10`;
+delimiter $
+CREATE PROCEDURE `pro_test10`(n int)
+begin
+  declare sum int default 0;
+  declare i int default 0;
+  repeat
+    set sum = sum +n;
+    set n = n - 1;
+  until n=0
+  end repeat;
+  select concat('1到',n,'之和=',sum) AS content;
+end$
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for pro_test11
+-- loop的用法
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_test11`;
+delimiter $
+CREATE PROCEDURE `pro_test11`(n int)
+begin
+  declare s int default 0;
+  declare i int default 0;
+  c: loop
+    set s=s+n;
+    set n=n-1;
+    if n<=0 then
+      leave c;
+    end if;
+  end loop c;
+  
+  select concat('1到',n,'之和=',s) AS content;
+end$
+delimiter ;
+
+
+create table emp(
+	id int(11) not null auto_increment,
+	name varchar(50) not null comment'姓名' ,
+	age int(11)  comment'年龄' ,
+	salary int(11)  comment'薪水' ,
+	primary key(id)
+	)engine=innodb, default charset=utf8;
+	
+insert into emp(id,name,age,salary) values(null,'金毛狮王',55,3800),(null,'白眉鹰王',60,4000),
+(null,'青翼蝠王',38,2800),(null,'紫衫龙王',42,1800);
+
+-- ----------------------------
+-- Procedure structure for 
+-- cursor游标的用法（存储过程或函数中使用）
+-- ----------------------------
+drop procedure pro_test12;
+delimiter $
+create procedure pro_test12()
+begin
+	declare e_id int(11);
+	declare e_name varchar(100);
+	declare e_age int(11);
+	declare e_salary int(11);
+	declare has_data int default 1;
+	
+	declare emp_result cursor for select * from emp;
+	declare exit handler for not found set has_data=0;
+	
+	open emp_result;
+		repeat
+			fetch emp_result into e_id,e_name,e_age,e_salary;
+			select concat('id=',e_id,'name=',e_name,'age=',e_age,'salary=',e_salary);
+		until has_data=0
+		end repeat;
+	close emp_result;
+end$
+delimiter ;
+
+
+-- ----------------------------
+-- Function structure for fun1
+-- 创建函数的用法，结合入参
+-- ----------------------------
+delimiter $
+create function fun1(countryId int)
+returns int
+begin
+	declare cnum int;
+	select count(*) into cnum from city where country_id = countryId;
+	return cnum;
+end$
+delimiter ;
+
+
+
+--示例需求：通过触发器记录emp表的数据变更日志，包含增加，修改，删除
+
+--创建一张日志表
+create table emp_logs(
+id int(11) not null auto_increment,
+opertation varchar(20) not null comment'操作类型:inset/update/delete' ,
+opertate_time datetime not null comment'操作时间' ,
+opertate_id int(11) not null comment'操作表的ID' ,
+opertate_params varchar(500) comment'操作参数' ,
+primary key(id)
+)engine=innodb default charset=utf8;
+
+
+--insert触发器
+drop trigger if exists emp_insert_trigger;
+delimiter $
+create trigger emp_insert_trigger
+after insert 
+on emp
+for each row
+begin
+  insert into emp_logs(id,opertation,opertate_time,opertate_id,opertate_params) 
+  values(null,'insert',now(),new.id,concat('插入后(id:',new.id,',name:',new.name,',age:',new.age,',salary:',new.salary,')'));
+end$
+delimiter ;
+
+insert into emp(id,name,age,salary) values(null,'光明左使',30,3500);
+select * from emp_logs;
+
+
+--update触发器
+drop trigger if exists emp_update_trigger;
+delimiter $
+create trigger emp_update_trigger
+after update 
+on emp
+for each row
+begin
+
+insert into emp_logs(id,opertation,opertate_time,opertate_id,opertate_params) 
+values(null,'update',now(),new.id,concat('修改前(id:',old.id,',name:',old.name,',age:',old.age,',salary:',old.salary,')',
+' 修改后(id:',new.id,',name:',new.name,',age:',new.age,',salary:',new.salary,')'));
+
+end$
+delimiter ;
+
+update emp set age=39 where id=3;
+select * from emp_logs;
+
+
+--delete触发器
+drop trigger if exists emp_delete_trigger;
+delimiter $
+create trigger emp_delete_trigger
+after delete 
+on emp
+for each row
+begin
+
+insert into emp_logs(id,opertation,opertate_time,opertate_id,opertate_params) 
+values(null,'delete',now(),old.id,concat('删除前(id:',old.id,',name:',old.name,',age:',old.age,',salary:',old.salary,')'));
+
+end$
+delimiter ;
+
+delete from emp where id=4;
+select * from emp_logs;
+
+
+
+
+
+--MySQL体系架构
+--https://dev.mysql.com/doc/refman/8.0/en/pluggable-storage-overview.html
+
+--MySQL引擎对比
+--https://dev.mysql.com/doc/refman/5.7/en/storage-engines.html
+
+create database demo_02 default charset=utf8mb4;
+
+create table goods_innodb(
+id int not null AUTO_INCREMENT,
+name varchar(20) not null,
+primary key(id)
+)engine=innodb default charset=utf8;
+
+create table country_innodb(
+country_id int not null AUTO_INCREMENT,
+country_name varchar(100) not null,
+primary key(country_id)
+)engine=innodb default charset=utf8;
+
+
+create table city_innodb(
+city_id int not null AUTO_INCREMENT,
+city_name varchar(50) not null,
+country_id int not null,
+primary key(city_id),
+key idx_fk_country_id(country_id),
+constraint fk_city_country foreign key(country_id) references country_innodb(country_id) on DELETE  restrict on UPDATE cascade 
+)engine=innodb default charset=utf8;
+
+
+INSERT INTO country_innodb VALUES (null, 'China'),(null, 'America'),(null, 'Japan');
+INSERT INTO city_innodb VALUES (null, 'Xian', 1),(null, 'NewYork', 2),(null, 'BeiJing', 1);
+
+
+
+create table goods_myisam(
+id int not null AUTO_INCREMENT,
+name varchar(20) not null,
+primary key(id)
+)engine=myisam default charset=utf8;
+
+insert into goods_myisam(id,name) values(null,'Meta20');
+
+
+--merge存储引擎: 将一系列myisam引擎的表合并
+
+create table order_1990(
+order_id int,
+order_money double(10,2),
+order_address varchar(50),
+primary key(order_id)
+)engine=myisam default charset=utf8;
+
+
+create table order_1991(
+order_id int,
+order_money double(10,2),
+order_address varchar(50),
+primary key(order_id)
+)engine=myisam default charset=utf8;
+
+
+create table order_all(
+order_id int,
+order_money double(10,2),
+order_address varchar(50),
+primary key(order_id)
+)engine=merge union=(order_1990,order_1991) insert_method=last default charset=utf8;
+
+
+
+insert into order_1990(order_id,order_money,order_address) values(1,100.0,'北京');
+insert into order_1990(order_id,order_money,order_address) values(2,100.0,'上海');
+
+
+insert into order_1991(order_id,order_money,order_address) values(10,200.0,'北京');
+insert into order_1991(order_id,order_money,order_address) values(11,200.0,'上海');
+
+
+--SQL优化
+
+--1、查看SQL执行频率
+--查看SQL执行频率 默认为session
+show status like 'Com_______'
+
+--查看SQL执行频率 全局的global
+show global status like 'Com_______'
+
+--查看SQL执行频率查 Innodb的情况
+show global status like 'Innodb_rows_%';
+
+--2、定位低效率之心SQL
+	-- 慢查询日志 参数--log-slow-queries[=file_name] long_query_time秒SQL日志文件 
+	--show processlist; 在查询结束以后才会记录，所以在应用反应执行效率出现问题的时候，查询慢查询日志并不能定位问题，
+		--使用 show processlist 命令查看当前MySQL在进行的线程（select connection_id(); 可以查询连接ID）
+
+--3、explain分析执行计划
+
+
+create table t_role(
+id varchar(32) 	not null,
+role_name varchar(255) default null,
+role_code varchar(255) default null,
+description varchar(255) default null,
+primary key(id),
+unique key unique_role_name(role_name)
+)ENGINE=InnoDB default charset=utf8;
+
+
+
+create table t_user(
+id varchar(32) 	not null,
+username varchar(45) not null,
+password varchar(96) not null,
+name varchar(45) not null,
+primary key(id),
+unique key unique_user_username(username)
+)ENGINE=InnoDB default charset=utf8;
+
+
+create table user_role(
+id int(11) not null auto_increment,
+user_id varchar(32) not null,
+role_id varchar(32) not null,
+primary key(id),
+key fk_user_id(user_id),
+key fk_role_id(role_id),
+constraint fk_ur_role_id foreign key(role_id) references t_role(id) on DELETE NO ACTION on UPDATE NO ACTION,
+constraint fk_ur_user_id foreign key(user_id) references t_user(id) on DELETE NO ACTION on UPDATE NO ACTION
+)ENGINE=InnoDB default charset=utf8;
+
+
+insert into t_user(id,username,password,name) values(1,'super','6df93e89ee7c11ea8be9f875a471a574','超级管理员');
+insert into t_user(id,username,password,name) values(2,'admin','6df93e89ee7c11ea8be9f875a471a574','系统管理员');
+insert into t_user(id,username,password,name) values(3,'itcast','a3d8793cee7c11ea8be9f875a471a574','test02');
+insert into t_user(id,username,password,name) values(4,'stu1','b8c1a8ffee7c11ea8be9f875a471a574','学生1');
+insert into t_user(id,username,password,name) values(5,'stu2','c0cb5c46ee7c11ea8be9f875a471a574','学生2');
+insert into t_user(id,username,password,name) values(6,'t1','c86cbf6cee7c11ea8be9f875a471a574','老师1');
+
+
+insert into t_role(id,role_name,role_code,description) values(5,'学生','student','学生');
+insert into t_role(id,role_name,role_code,description) values(7,'老师','teacher','老师');
+insert into t_role(id,role_name,role_code,description) values(8,'教学管理员','teachmanager','教学管理员');
+insert into t_role(id,role_name,role_code,description) values(9,'管理员','admin','管理员');
+insert into t_role(id,role_name,role_code,description) values(10,'超级管理员','super','超级管理员');
+
+insert into user_role(id,user_id,role_id) values(1,1,5);
+insert into user_role(id,user_id,role_id) values(2,1,7);
+insert into user_role(id,user_id,role_id) values(3,2,8);
+insert into user_role(id,user_id,role_id) values(4,3,9);
+insert into user_role(id,user_id,role_id) values(5,4,8);
+insert into user_role(id,user_id,role_id) values(6,5,10);
+
+
+create table tb_seller(
+sellerid varchar(100),
+name varchar(100),
+nickname varchar(50),
+password varchar(60),
+status varchar(1),
+address varchar(100),
+createtime datetime,
+primary key(sellerid)
+)engine=innodb default charset=utf8mb4;
+
+create index idx_seller_name_sta_addr on tb_seller(name,status,address);
+
+truncate tb_seller;
+insert into tb_seller(sellerid,name,nickname,password,status,address,createtime) values
+('huawei1',"华为技术有限公司1","华为小店1","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei2',"华为技术有限公司2","华为小店2","c86cbf6cee7c11ea8be9f875a471a574",'1','北京朝阳2号院','2088-01-01 12:00:00'),
+('huawei3',"华为技术有限公司3","华为小店3","c86cbf6cee7c11ea8be9f875a471a574",'2','北京朝阳3号院','2088-01-01 12:00:00'),
+('huawei4',"华为技术有限公司4","华为小店4","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei5',"华为技术有限公司5","华为小店5","c86cbf6cee7c11ea8be9f875a471a574",'1','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei6',"华为技术有限公司6","华为小店6","c86cbf6cee7c11ea8be9f875a471a574",'1','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei7',"华为技术有限公司7","华为小店7","c86cbf6cee7c11ea8be9f875a471a574",'2','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei8',"华为技术有限公司8","华为小店8","c86cbf6cee7c11ea8be9f875a471a574",'2','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei9',"华为技术有限公司9","华为小店9","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei10',"华为技术有限公司10","华为小店10","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei11',"华为技术有限公司11","华为小店11","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00'),
+('huawei12',"华为技术有限公司12","华为小店12","c86cbf6cee7c11ea8be9f875a471a574",'0','北京朝阳1号院','2088-01-01 12:00:00')
+;
+
+-- 避免索引失效
+-- 1) 全值匹配,对索引中所有列都指定具体值
+explain select * from tb_seller where name='华为技术有限公司1' and status='0' and address='北京朝阳1号院'; -- 走索引 key_len=813
+explain select * from tb_seller where name='华为技术有限公司1' and address='北京朝阳1号院' and status='0' ; -- 和顺序无关
+
+-- 2)最左前缀法则
+-- 如果索引了多列, 要遵守最左前缀法则, 指的是查询从索引的最左列开始,并且不跳过索引中的列
+explain select * from tb_seller where status='0' and address='北京朝阳1号院'; -- 不走索引
+explain select * from tb_seller where address='北京朝阳1号院'; -- 不走索引
+
+
+explain select * from tb_seller where name='华为技术有限公司1' and status='0'; -- 走索引 key_len=410 两个字段的索引
+explain select * from tb_seller where name='华为技术有限公司1' and address='北京朝阳1号院'; -- 走索引 key_len=403 只走name一个字段的索引
+
+-- 3)范围查询右边的列，不能使用索引
+-- 4)不要再索引上进行运算操作，索引将失效
+-- 5)字符串不加单引号，造成索引失效
+-- 6)尽量使用覆盖索引，避免select *
+-- 7)
+-- 8)
+-- 9) 如果MySQL评估使用索引比全表扫描慢，则不使用索引
+-- 10) is NULL、is NOT NULL 有时索引失效
+-- 11) in走索引 not in不走索引
+-- 12) 单列索引和多列索引
+  -- 尽量使用复合索引，而少使用单列索引
+  -- 多个单列索引会选择一个最优的使用（辨识度最高的索引）
+
+
+create table user(
+ id int(11) not null,
+ name varchar(50) ,
+ password varchar(32) ,
+ perms varchar(100)
+)engine=InnoDB default charset=utf8;
+
+
+insert into user(id,name,password,perms) values(1,'DJ000003','abic@123','[user:add]')
