@@ -5,6 +5,7 @@
 - [MySQL教程](http://c.biancheng.net/mysql/)
 - [MySQL保存包含单双引号数据方式](https://blog.csdn.net/yhcxy/article/details/106671636)
 - [MySQL窗口函数](https://zhuanlan.zhihu.com/p/164698823)
+- [ MySQL 高级课程-2020](https://www.bilibili.com/video/BV1ni4y1t7qY?p=1)
 
 ## 1、索引
 
