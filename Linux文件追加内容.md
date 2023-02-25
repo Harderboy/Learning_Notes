@@ -95,8 +95,8 @@ Hello,world!
 
 ## cat + EOF
 
-追加：`cat <<EOF/<<-EOF >>file`
-覆盖：`cat <<EOF/<<-EOF >file`
+- 追加：`cat <<EOF/<<-EOF >>file`  
+- 覆盖：`cat <<EOF/<<-EOF >file`
 
 ## tee + EOF
 
